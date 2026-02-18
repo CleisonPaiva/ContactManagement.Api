@@ -1,62 +1,97 @@
 ﻿# ContactManagement.API
 
-Professional RESTful API for managing contacts built with .NET 8 and EF Core.
+![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4)
+![EF Core](https://img.shields.io/badge/EF%20Core-8.0-512BD4)
+
+Professional RESTful API for contact management built with **.NET 8** and **EF Core**.  
+Demonstrates best practices like async operations, soft delete, DTOs, validation, filters, pagination, and Swagger documentation.
 
 ---
 
-## Table of Contents
+## ✨ Features
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-- [Endpoints](#endpoints)
-- [Architecture](#architecture)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## Project Overview
-
-This project is a contact management system API.  
-It demonstrates professional backend practices including:
-
-- Layered architecture (Controller → Service → DbContext)  
-- Async/Await for database operations  
-- Soft delete for data integrity  
-- DTOs for request/response separation  
-- Validation of input data  
-- Pagination and dynamic filtering  
-- Global error handling  
-- Swagger documentation for easy testing
+- ✅ Full CRUD operations
+- ✅ Pagination (`?page=1&pageSize=10`)
+- ✅ Filters by name and status (`?name=John&active=true`)
+- ✅ Soft delete (`IsDeleted` flag)
+- ✅ Data validation
+- ✅ Async operations
+- ✅ Swagger documentation
 
 ---
 
-## Features
+## 🛠 Tech Stack
 
-- Create, read, update, delete contacts  
-- Filter by name and active status  
-- Pagination support  
-- Soft delete (does not remove data from the database)  
-- Swagger/OpenAPI documentation  
-- Fully async database operations  
-
----
-
-## Technology Stack
-
-- **Language:** C#  
-- **Framework:** .NET 8  
-- **ORM:** Entity Framework Core  
-- **Database:** SQL Server (local or Azure)  
-- **API Docs:** Swagger / Swashbuckle  
+- **.NET 8**
+- **Entity Framework Core**
+- **SQL Server**
+- **Swagger**
+- **FluentValidation**
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-1. Clone the repository:
+### Prerequisites
+
+- .NET 8 SDK
+- SQL Server (or LocalDB)
+
+### Installation
 
 ```bash
-git clone https://github.com/your-username/ContactManagement.API.git
+# Clone the repository
+git clone https://github.com/CleisonPaiva/ContactManagement.API.git
+
+# Navigate to the folder
+cd ContactManagement.API
+
+# Configure the connection string in appsettings.json
+# "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ContactDb;Trusted_Connection=True;"
+
+# Run migrations
+dotnet ef database update
+
+# Run the application
+dotnet run
+```
+# Access https://localhost:5001/swagger to test the API.
+
+
+
+## 📡 Endpoints
+
+| Method | Route | Description |
+|--------|------|-----------|
+| GET | `/api/contacts` | List all (with pagination/filters) |
+| GET | `/api/contacts/{id}` | Get by ID |
+| POST | `/api/contacts` | 	Create new contact |
+| PUT | `/api/contacts/{id}` | Update contact |
+| DELETE | `/api/contacts/{id}` | Soft delete |
+
+### Request example (POST)
+
+```json
+POST /api/contacts
+{
+  "firstName": "João",
+  "lastName": "Silva",
+  "email": "joao@email.com",
+  "phoneNumber": "11999999999",
+  "isActive": true
+}
+```
+
+## 📁 Folder Structure
+
+The structure follows a clean architecture pattern:
+
+```
+ContactManagement.API/ 
+├── Controllers/
+├── Services/
+├── DTOs/
+├── Entities/
+├── Data/
+└── Middlewares/
+```

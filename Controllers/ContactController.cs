@@ -1,5 +1,6 @@
 ﻿using ContactManagement.Api.Context;
 using ContactManagement.Api.Entities;
+using ContactManagement.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,84 +10,62 @@ namespace ContactManagement.Api.Controllers;
 [ApiController]
 public class ContactController : ControllerBase
 {
-    public readonly ContactContext _context;
+    public readonly IContactService _contactService;
 
-    public ContactController(ContactContext context)
+    public ContactController(IContactService contactService)
     {
-        _context = context;
+        _contactService = contactService;
     }
+
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var contacts = await _context.Contacts.ToListAsync();
-        return Ok(contacts);
+        return Ok(await _contactService.GetAllAsync());
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(Contact contact)
     {
-        _context.Add(contact);
-        await _context.SaveChangesAsync();
-
-        //return Ok(contact);
-
-        return CreatedAtAction(nameof(GetById), new { id = contact.Id }, contact);
-
+        var created = await _contactService.CreateAsync(contact);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var contact = await _context.Contacts.FindAsync(id);
-
-        if(contact == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(contact);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id,Contact contact)
-    {
-        var contactDb = await _context.Contacts.FindAsync(id);
+        var contact = await _contactService.GetByIdAsync(id);
 
         if (contact == null)
         {
             return NotFound();
         }
 
-        contactDb.FirstName = contact.FirstName;
-        contactDb.LastName = contact.LastName;
-        contactDb.Email = contact.Email;
-        contactDb.PhoneNumber = contact.PhoneNumber;
-        contactDb.IsActive = contact.IsActive;
-        contactDb.CreatedAt = contact.CreatedAt;
-        contactDb.UpdatedAt = DateTime.UtcNow;
-
-        _context.Contacts.Update(contactDb);
-        await _context.SaveChangesAsync();
-
-
         return Ok(contact);
+
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, Contact contact)
+    {
+        var updated = await _contactService.UpdateAsync(id, contact);
+
+        if (updated == null)
+            return NotFound();
+
+        return Ok(updated);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var contactDb = await _context.Contacts.FindAsync(id);
 
-        if (contactDb == null)
-        {
-            return NotFound();
-        }
+        bool deleted = await _contactService.DeleteAsync(id);
 
-        _context.Contacts.Remove(contactDb);
-        await _context.SaveChangesAsync();
+        if (!deleted)
+            return NotFound(); // 404 se não existia
 
-        return NoContent();
+        return NoContent(); // 204 se deletou
     }
 
 
