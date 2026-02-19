@@ -1,6 +1,6 @@
 ﻿
 
-using ContactManagement.Api.Entities;
+using ContactManagement.Api.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContactManagement.Api.Context;

@@ -1,12 +1,13 @@
-﻿using ContactManagement.Api.Entities;
+﻿using ContactManagement.Api.Core.Dtos;
+using ContactManagement.Api.Core.Entities;
 
 namespace ContactManagement.Api.Services;
 
 public interface IContactService
 {
-    Task<List<Contact>> GetAllAsync();
-    Task<Contact> GetByIdAsync(int id);
-    Task<Contact> CreateAsync(Contact contact);
-    Task<Contact> UpdateAsync(int id, Contact contact);
+    Task<List<ContactDto>> GetAllAsync();
+    Task<ContactDto> GetByIdAsync(int id);
+    Task<ContactDto> CreateAsync(ContactDto contact);
+    Task<ContactDto> UpdateAsync(int id, ContactDto contact);
     Task<bool> DeleteAsync(int id);
 }

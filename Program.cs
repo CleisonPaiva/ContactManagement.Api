@@ -1,6 +1,9 @@
 using ContactManagement.Api.Context;
+using ContactManagement.Api.Core.AutoMappers;
 using ContactManagement.Api.Services;
 using Microsoft.EntityFrameworkCore;
+
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,12 @@ builder.Services.AddDbContext<ContactContext>(options =>
 
 // Register the service interface and implementation
 builder.Services.AddScoped<IContactService, ContactService>();
+
+//Mapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddMaps(typeof(ContactProfile).Assembly);
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

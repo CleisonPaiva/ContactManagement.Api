@@ -1,5 +1,6 @@
 ﻿using ContactManagement.Api.Context;
-using ContactManagement.Api.Entities;
+using ContactManagement.Api.Core.Dtos;
+using ContactManagement.Api.Core.Entities;
 using ContactManagement.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,9 @@ public class ContactController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Contact contact)
+    public async Task<IActionResult> Create(ContactDto contactDto)
     {
-        var created = await _contactService.CreateAsync(contact);
+        var created = await _contactService.CreateAsync(contactDto);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
@@ -46,9 +47,9 @@ public class ContactController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Contact contact)
+    public async Task<IActionResult> Update(int id, ContactDto contactDto)
     {
-        var updated = await _contactService.UpdateAsync(id, contact);
+        var updated = await _contactService.UpdateAsync(id, contactDto);
 
         if (updated == null)
             return NotFound();

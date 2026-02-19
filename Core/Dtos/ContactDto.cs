@@ -1,6 +1,6 @@
-﻿namespace ContactManagement.Api.Entities;
+﻿namespace ContactManagement.Api.Core.Dtos;
 
-public class Contact
+public class ContactDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
