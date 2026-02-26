@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Azure.Core;
 using ContactManagement.Api.Context;
 using ContactManagement.Api.Core.Dtos;
+using ContactManagement.Api.Core.Dtos.Pagination;
 using ContactManagement.Api.Core.Entities;
+using ContactManagement.Api.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContactManagement.Api.Services;
@@ -17,10 +21,11 @@ public class ContactService : IContactService
         _mapper = mapper;
     }
 
-    public async Task<List<ContactDto>> GetAllAsync()
+    public async Task<PagedResponseDto<ContactDto>> GetAllAsync(PagedRequestDto requestDto)
     {
-        var contacts = await _context.Contacts.ToListAsync();
-        return _mapper.Map<List<ContactDto>>(contacts);
+        return await _context.Contacts
+            .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+            .ToPagedResponseAsync(requestDto.Page, requestDto.PageSize);
     }
 
     public async Task<ContactDto> CreateAsync(ContactDto contactDto)

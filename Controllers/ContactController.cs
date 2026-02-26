@@ -1,5 +1,6 @@
 ﻿using ContactManagement.Api.Context;
 using ContactManagement.Api.Core.Dtos;
+using ContactManagement.Api.Core.Dtos.Pagination;
 using ContactManagement.Api.Core.Entities;
 using ContactManagement.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -20,9 +21,10 @@ public class ContactController : ControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] PagedRequestDto request)
     {
-        return Ok(await _contactService.GetAllAsync());
+        var result = await _contactService.GetAllAsync(request);
+        return Ok(result);
     }
 
     [HttpPost]

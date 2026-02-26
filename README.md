@@ -87,11 +87,13 @@ POST /api/contacts
 The structure follows a clean architecture pattern:
 
 ```
-ContactManagement.API/ 
+ContactManagement.API/
+├── Context/
 ├── Controllers/
 ├── Services/
-├── DTOs/
-├── Entities/
-├── Data/
+├── Core/
+│   ├── AutoMappers/
+│   ├── Dtos/
+│   └── Entities/
 └── Middlewares/
 ```
